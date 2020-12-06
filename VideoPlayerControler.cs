@@ -1,4 +1,3 @@
-﻿
 using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +16,7 @@ public class VideoPlayerControler : UdonSharpBehaviour
     [UdonSynced]private VRCUrl syncedURL;
     [UdonSynced]private int currentVideoNumber;
 
+    public VRCUrl WorldStartUrl;
     public AudioSource[] speakers;
     public Slider sliderVolume;
     public VRCUrlInputField URLField;
@@ -24,14 +24,18 @@ public class VideoPlayerControler : UdonSharpBehaviour
     public VRCUrl ADHDJ;
     public VRCUrl ninethreeXtil;
     public VRCUrl rovnine;
+    public VRCUrl AfterHours;
+    public VRCUrl Lilkizze;
+    public VRCUrl Zoomair;
+    public VRCUrl Badlands;
     public Text PWNER;
+    public string DJ;
     
 
     void Start()
     {
         videoPlayer = (BaseVRCVideoPlayer)GetComponent(typeof(BaseVRCVideoPlayer));
         PWNER.text = "PWNer: " + Networking.GetOwner(gameObject).displayName;
-
     }
     public override void OnDeserialization()
     {
@@ -86,7 +90,29 @@ public class VideoPlayerControler : UdonSharpBehaviour
     {
         videoPlayer.Play();
     }
-    public void PlayInsomniac()
+     public void PlayZoomair()
+    {
+        if (!Networking.IsOwner(gameObject)) return;
+        syncedURL = Zoomair;
+        currentVideoNumber += 1;
+        LoadURL();
+    }
+     public void PlayLilkizzle()
+    {
+        if (!Networking.IsOwner(gameObject)) return;
+        syncedURL = Lilkizze;
+        currentVideoNumber += 1;
+        LoadURL();
+    }
+     public void PlayBadlands()
+    {
+        if (!Networking.IsOwner(gameObject)) return;
+        syncedURL = Badlands;
+        currentVideoNumber += 1;
+        LoadURL();
+    }
+
+   public void PlayInsomniac()
     {
         if (!Networking.IsOwner(gameObject)) return;
         syncedURL = Insomniac;
@@ -114,6 +140,14 @@ public class VideoPlayerControler : UdonSharpBehaviour
         currentVideoNumber += 1;
         LoadURL();
     }
+    public void PlayAfterHours()
+    {   
+        if (!Networking.IsOwner(gameObject)) return;
+        syncedURL = AfterHours;
+        currentVideoNumber += 1;
+        LoadURL();
+    }
+
     public void PWN()
     {
         if (!Networking.IsOwner(gameObject))
@@ -127,10 +161,6 @@ public class VideoPlayerControler : UdonSharpBehaviour
     {
         PWNER.text = "PWNer: " + Networking.GetOwner(gameObject).displayName;
     }
-    public void SetOwnerName()
-    {
-        
-    }
     public override void OnVideoError(VideoError videoError)
     {
         if(videoError == VideoError.RateLimited)
@@ -138,4 +168,19 @@ public class VideoPlayerControler : UdonSharpBehaviour
             loadedVideoNumber -=1;
         }
     }
+    public void RestartStreamButton()
+    {
+        if (!videoPlayer.IsPlaying && syncedURL == null)
+        {
+            videoPlayer.Stop();
+            syncedURL = WorldStartUrl;
+            videoPlayer.LoadURL(syncedURL);
+        }
+        else
+        {
+            videoPlayer.Stop();
+            videoPlayer.LoadURL(syncedURL);
+        }
+    }
+
 }
