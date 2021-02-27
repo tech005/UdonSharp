@@ -12,4 +12,4 @@ Snippets for programming world objects for VRChat
 6. import udonsharp package
 7. open video player scene
 8. add vrcworld to scene
-![image](https://user-images.githubusercontent.com/38814017/109383188-46625900-78bb-11eb-970b-1cb39e47d286.png)
+
